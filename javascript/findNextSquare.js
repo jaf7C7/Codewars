@@ -22,8 +22,7 @@
 
 function findNextSquare(sq) {
 	let n = Math.sqrt(sq);
-	if (n % 1 != 0) return -1;
-	return ++n ** 2;
+	return n % 1 == 0 ? ++n ** 2 : -1;
 }
 
 // Tests
