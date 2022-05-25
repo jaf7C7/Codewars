@@ -17,12 +17,9 @@
  */
 
 function XO(str) {
-	let x=0, o=0;
-	for (let char of str) {
-		if ('Xx'.includes(char)) x++;
-		if ('oO'.includes(char)) o++;
-	}
-	return x + o == 0 ? true : x == o;
+	let x = str.match(/x/gi);
+	let o = str.match(/o/gi);
+	return (x && x.length) == (o && o.length);
 }
 
 // Tests
