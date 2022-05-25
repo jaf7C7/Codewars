@@ -8,7 +8,7 @@
 # with less than two characters.
 
 removeChar () {
-	echo "${1:1:${#1} - 2}"	
+	echo "${1:1:-1}"	
 }
 
 # Tests
