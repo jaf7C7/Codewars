@@ -53,19 +53,41 @@
 # After placing signs and brackets, the Maximum value obtained from the
 # expression is 9 * (1+1) = 18.
 
-# TODO: What if non-integers? Then `bc` extravaganza.
-expressionsMatter () {
-	max=0
-	a=$(( $1 + $2 + $3 ))
-	b=$(( $1 + $2 * $3 ))
-	c=$(( ($1 + $2) * $3 ))
-	d=$(( $1 * $2 * $3 ))
-	e=$(( $1 * $2 + $3 ))
-	f=$(( $1 * ($2 + $3) ))
-	for expr in $a $b $c $d $e $f; do
-		(( expr > max )) && max=$expr
-	done
-	echo $max
+# For integer arguments:
+# expressionsMatter () {
+# 	max=0
+# 	a=$(( $1 + $2 + $3 ))
+# 	b=$(( $1 + $2 * $3 ))
+# 	c=$(( ($1 + $2) * $3 ))
+# 	d=$(( $1 * $2 * $3 ))
+# 	e=$(( $1 * $2 + $3 ))
+# 	f=$(( $1 * ($2 + $3) ))
+# 	for expr in $a $b $c $d $e $f; do
+# 		(( expr > max )) && max=$expr
+# 	done
+# 	echo $max
+# }
+
+# To handle non-integers, use `bc`
+expressionsMatter() {
+	bc <<-EOI
+	a=$1
+	b=$2
+	c=$3
+	
+	e[0] = (a + b + c)
+	e[1] = (a + b * c)
+	e[2] = ((a + b) * c)
+	e[3] = (a * b * c)
+	e[4] = (a * b + c)
+	e[5] = (a * (b + c))
+
+	m = 0
+	for (i = 0; e[i]; i++) {
+		if (e[i] > m) m = e[i]
+	}
+	m
+	EOI
 }
 
 # Tests
@@ -90,3 +112,21 @@ expressionsMatter () {
 [[ $(expressionsMatter 9 1 1) == 18 ]] && echo 'passed' || echo 'failed'
 [[ $(expressionsMatter 10 5 6) == 300 ]] && echo 'passed' || echo 'failed'
 [[ $(expressionsMatter 1 10 1) == 12 ]] && echo 'passed' || echo 'failed'
+[[ $(expressionsMatter 51.26 0.20 89.30) == 4595.37 ]] \
+	&& echo 'passed' || echo 'failed'
+[[ $(expressionsMatter 5.18 50.23 5.87) == 1527.31 ]] \
+	&& echo 'passed' || echo 'failed'
+[[ $(expressionsMatter 77.20 4.55 22.91) == 8047.36 ]] \
+	&& echo 'passed' || echo 'failed'
+[[ $(expressionsMatter 92.14 87.93 94.27) == 763763.28 ]] \
+	&& echo 'passed' || echo 'failed'
+[[ $(expressionsMatter 0.47 98.32 2.26) == 223.26 ]] \
+	&& echo 'passed' || echo 'failed'
+[[ $(expressionsMatter 66.62 19.89 92.21) == 122184.70 ]] \
+	&& echo 'passed' || echo 'failed'
+[[ $(expressionsMatter 6.16 55.19 3.12) == 1060.70 ]] \
+	&& echo 'passed' || echo 'failed'
+[[ $(expressionsMatter 99.18 110.5 5.26) == 57646.39 ]] \
+	&& echo 'passed' || echo 'failed'
+[[ $(expressionsMatter 30.23 92.82 66.74) == 187268.43 ]] \
+	&& echo 'passed' || echo 'failed'
