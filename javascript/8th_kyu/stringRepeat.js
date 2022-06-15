@@ -11,11 +11,7 @@
  */
 
 function repeatStr(n, str) {
-	let result = '';
-	while (result.length < n * str.length) {
-		result += str;
-	}
-	return result;
+	return str.repeat(n);
 }
 
 // Tests
