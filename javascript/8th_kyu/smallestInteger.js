@@ -23,3 +23,5 @@ console.log(sif.findSmallestInt([78,56,232,12,18]) == 12);
 console.log(sif.findSmallestInt([78,56,232,412,228]) == 56);
 console.log(sif.findSmallestInt([78,56,232,12,0]) == 0);
 console.log(sif.findSmallestInt([1,56,232,12,8]) == 1);
+console.log(sif.findSmallestInt([34, 15, 88, 2]) == 2);
+console.log(sif.findSmallestInt([34, -345, -1, 100]) == -345);
